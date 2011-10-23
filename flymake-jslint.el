@@ -13,6 +13,8 @@
 ;; Usage: (add-hook 'js-mode-hook 'flymake-jslint-load)
 (require 'flymake)
 
+;;; Code:
+
 (defgroup flymake-jslint nil
   "Flymake checking of Javascript using jslint"
   :group 'programming
@@ -20,12 +22,12 @@
 
 ;;;###autoload
 (defcustom flymake-jslint-detect-trailing-comma t
-  "Whether or not to report warnings about trailing commas"
+  "Whether or not to report warnings about trailing commas."
   :type 'boolean :group :flymake-jslint)
 
 ;;;###autoload
 (defcustom flymake-jslint-command "jsl"
-  "Whether or not to report warnings about trailing commas"
+  "Whether or not to report warnings about trailing commas."
   :type 'string :group 'flymake-jslint)
 
 (defvar flymake-jslint-err-line-patterns
@@ -37,6 +39,7 @@
 
 
 (defun flymake-jslint-init ()
+  "Construct a command that flymake can use to check javascript source."
   (list flymake-jslint-command (list "-process" (flymake-init-create-temp-buffer-copy
                                                  'flymake-create-temp-inplace))))
 
@@ -47,7 +50,7 @@
 
 This function is designed to be called in `js-mode-hook' or
 equivalent; it does not alter flymake's global configuration, so
-`flymake-mode' alone will not suffice."
+function `flymake-mode' alone will not suffice."
   (interactive)
   (set (make-local-variable 'flymake-allowed-file-name-masks) '(("." flymake-jslint-init)))
   (set (make-local-variable 'flymake-err-line-patterns) flymake-jslint-err-line-patterns)
