@@ -37,11 +37,18 @@
 (defvar flymake-jslint-trailing-comma-err-line-pattern
   '("^\\(.+\\)\:\\([0-9]+\\)\: strict \\(warning: trailing comma.+\\)\:$" nil 2 nil 3))
 
+(defun flymake-jslint--create-temp-in-system-tempdir (file-name prefix)
+  "Return a temporary file name into which flymake can save buffer contents.
+
+This is tidier than `flymake-create-temp-inplace', and therefore
+preferable when the checking doesn't depend on the file's exact
+location."
+  (make-temp-file (or prefix "flymake-jslint") nil ".js"))
 
 (defun flymake-jslint-init ()
   "Construct a command that flymake can use to check javascript source."
   (list flymake-jslint-command (list "-process" (flymake-init-create-temp-buffer-copy
-                                                 'flymake-create-temp-inplace))))
+                                                 'flymake-jslint--create-temp-in-system-tempdir))))
 
 
 ;;;###autoload
