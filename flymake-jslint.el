@@ -27,7 +27,7 @@
 
 ;;;###autoload
 (defcustom flymake-jslint-command "jsl"
-  "Whether or not to report warnings about trailing commas."
+  "Name (and optionally full path) of jslint executable."
   :type 'string :group 'flymake-jslint)
 
 (defvar flymake-jslint-err-line-patterns
