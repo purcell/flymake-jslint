@@ -65,7 +65,7 @@ function `flymake-mode' alone will not suffice."
     (add-to-list 'flymake-err-line-patterns
                  flymake-jslint-trailing-comma-err-line-pattern
                  t))
-  (if (executable-find "jsl")
+  (if (executable-find flymake-jslint-command)
       (flymake-mode t)
     (message "Not enabling flymake: jsl command not found")))
 
