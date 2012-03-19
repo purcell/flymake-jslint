@@ -70,5 +70,10 @@ function `flymake-mode' alone will not suffice."
     (message "Not enabling flymake: jsl command not found")))
 
 
+(defadvice flymake-post-syntax-check (before flymake-force-check-was-interrupted)
+  (setq flymake-check-was-interrupted t))
+(ad-activate 'flymake-post-syntax-check)
+
+
 (provide 'flymake-js)
 ;;; flymake-jslint.el ends here
