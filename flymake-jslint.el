@@ -11,6 +11,11 @@
 ;;   http://www.emacswiki.org/cgi-bin/wiki/FlymakeJavaScript
 ;;   http://d.hatena.ne.jp/kazu-yamamoto/mobile?date=20071029
 ;;
+;; Works with either "jslint" from jslint.com, or "jsl" from
+;; javascriptlint.com. The default is "jslint", but if you want to use
+;; "jsl" instead, you can customize the values of
+;; `flymake-jslint-command' and `flymake-jslint-args' accordingly.
+;;
 ;; Usage:
 ;;   (require 'flymake-jslint)
 ;;   (add-hook 'js-mode-hook 'flymake-jslint-load)
@@ -32,21 +37,36 @@
   :type 'boolean :group :flymake-jslint)
 
 ;;;###autoload
-(defcustom flymake-jslint-command "jsl"
+(defcustom flymake-jslint-command "jslint"
   "Name (and optionally full path) of jslint executable."
   :type 'string :group 'flymake-jslint)
 
-(defvar flymake-jslint-err-line-patterns
-  '(("^\\(.+\\)\:\\([0-9]+\\)\: \\(SyntaxError\:.+\\)\:$" nil 2 nil 3)
+;;;###autoload
+(defcustom flymake-jslint-args
+  (mapcar
+   'symbol-name
+   '(--white --undef --nomen --regexp --plusplus --bitwise --newcap --sloppy --vars --eqeq))
+  "Command-line args for jslint executable."
+  :type '(repeat string) :group 'flymake-jslint)
+
+(defconst flymake-jslint-err-line-patterns
+  '(("^ *#[0-9]+ \\(.*?\\)\n.*?// Line \\([0-9]+\\), Pos \\([0-9]+\\)$" nil 2 3 1)
+    ;; jsl
+    ("^\\(.+\\)\:\\([0-9]+\\)\: \\(SyntaxError\:.+\\)\:$" nil 2 nil 3)
     ("^\\(.+\\)(\\([0-9]+\\)): \\(SyntaxError:.+\\)$" nil 2 nil 3)
     ("^\\(.+\\)(\\([0-9]+\\)): \\(lint \\)?\\(warning:.+\\)$" nil 2 nil 4)))
-(defvar flymake-jslint-trailing-comma-err-line-pattern
+(defconst flymake-jslint-trailing-comma-err-line-pattern
   '("^\\(.+\\)\:\\([0-9]+\\)\: strict \\(warning: trailing comma.+\\)\:$" nil 2 nil 3))
 
 (defun flymake-jslint-command (filename)
   "Construct a command that flymake can use to check javascript source."
-  (list flymake-jslint-command "-process" filename))
-
+  (append
+   (list flymake-jslint-command)
+   flymake-jslint-args
+   (unless (string-match "jslint" flymake-jslint-command)
+     ;; jsl required option
+     (list "-process"))
+   (list filename)))
 
 ;;;###autoload
 (defun flymake-jslint-load ()
