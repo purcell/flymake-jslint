@@ -12,8 +12,9 @@
 ;;   http://d.hatena.ne.jp/kazu-yamamoto/mobile?date=20071029
 ;;
 ;; Works with either "jslint" from jslint.com, or "jsl" from
-;; javascriptlint.com. The default is "jslint", but if you want to use
-;; "jsl" instead, you can customize the values of
+;; javascriptlint.com. The default is "jsl", if that executable is
+;; found at load-time. Otherwise, "jslint" is the default. If you want
+;; to use the non-default checker, you can customize the values of
 ;; `flymake-jslint-command' and `flymake-jslint-args' accordingly.
 ;;
 ;; Usage:
@@ -37,15 +38,17 @@
   :type 'boolean :group :flymake-jslint)
 
 ;;;###autoload
-(defcustom flymake-jslint-command "jslint"
+(defcustom flymake-jslint-command
+  (if (executable-find "jsl") "jsl" "jslint")
   "Name (and optionally full path) of jslint executable."
   :type 'string :group 'flymake-jslint)
 
 ;;;###autoload
 (defcustom flymake-jslint-args
-  (mapcar
-   'symbol-name
-   '(--white --undef --nomen --regexp --plusplus --bitwise --newcap --sloppy --vars --eqeq))
+  (unless (string-equal "jsl" flymake-jslint-command)
+    (mapcar
+     'symbol-name
+     '(--white --undef --nomen --regexp --plusplus --bitwise --newcap --sloppy --vars --eqeq)))
   "Command-line args for jslint executable."
   :type '(repeat string) :group 'flymake-jslint)
 
