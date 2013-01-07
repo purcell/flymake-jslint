@@ -35,7 +35,7 @@
 ;;;###autoload
 (defcustom flymake-jslint-detect-trailing-comma t
   "Whether or not to report warnings about trailing commas."
-  :type 'boolean :group :flymake-jslint)
+  :type 'boolean :group 'flymake-jslint)
 
 ;;;###autoload
 (defcustom flymake-jslint-command
