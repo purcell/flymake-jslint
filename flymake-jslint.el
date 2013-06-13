@@ -83,5 +83,5 @@
                      "js"))
 
 
-(provide 'flymake-js)
+(provide 'flymake-jslint)
 ;;; flymake-jslint.el ends here
