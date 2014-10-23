@@ -27,7 +27,7 @@ to use the non-default checker, you can customize the values of
 `flymake-jslint-command` and `flymake-jslint-args` accordingly.
 
 [marmalade]: http://marmalade-repo.org
-[melpa]: http://melpa.milkbox.net
+[melpa]: http://melpa.org
 
 <hr>
 
